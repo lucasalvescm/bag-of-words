@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from pandas.tools.plotting import table
 dsMovies = open('movies.dat','r',encoding = "ISO-8859-1")
 
 
@@ -61,20 +61,35 @@ for palavra in list_filter_movies:
 	
 
 file.close()
+
+
 dict_test = {}
 for obj in list_final:
 	for key, value in obj.items():
 		dict_test.update({key:value})
 
 
-a = pd.DataFrame(dict_test)
-
-print (a)
+matriz = pd.DataFrame(dict_test) #transforma o dicionario em matriz.
 
 
+#Método para exportar a matriz como png
+def matrix_to_png(a):
+	a.index = [item for item in a.index] # Format date
+
+	fig, ax = plt.subplots(figsize=(40, 15)) # set size frame
+	ax.xaxis.set_visible(False)  # hide the x axis
+	ax.yaxis.set_visible(False)  # hide the y axis
+	ax.set_frame_on(False)  # no visible frame, uncomment if size is ok
+	tabla = table(ax, a, loc='upper right', colWidths=[0.01]*len(a.columns))  # where df is your data frame
+	tabla.auto_set_font_size(False) # Activate set fontsize manually
+	tabla.set_fontsize(20) # if ++fontsize is necessary ++colWidths
+	tabla.scale(4,5) # change size table
+	plt.savefig('table.png', transparent=True)
 
 
 
+
+matrix_to_png(matriz)
 
 
 
