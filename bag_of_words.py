@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 dsMovies = open('movies.dat','r',encoding = "ISO-8859-1")
 
@@ -16,7 +17,7 @@ list_filmes = []
 #Filtra o dataset
 count = 0
 for row in dsMovies:
-	if count<3:
+	if count<10:
 		vectorRow = row.split('::')
 		objRow={
 			'id': vectorRow[0],
@@ -38,7 +39,7 @@ for row in dsMovies:
 		break
 
 	count +=1
-
+list_final =[]
 file = open('testfile.txt','w') 
 for palavra in list_filter_movies:
 	dict_unique = {}
@@ -47,18 +48,36 @@ for palavra in list_filter_movies:
 	#import ipdb;ipdb.set_trace()
 	for filme in list_filmes:
 		#print(filme)
-		count_word = 0
+		palavra_in_titulo = 0
 		titulo_split = filme.split(" ")
-		titulo_split = [element.lower() for element in titulo_split]
+		titulo_split = [element.lower() for element in titulo_split] #transformo todos os itens da lista para minusculo
 		if palavra.lower() in titulo_split:
-			count_word = 1
+			palavra_in_titulo = 1
 
-		dict_unique.update({filme.lower():count_word})
+		dict_unique.update({filme.lower():palavra_in_titulo})
 	dict_words.update({palavra:dict_unique})
-
 	file.write(str(dict_words)+'\n')
+	list_final.append(dict_words)
+	
 
 file.close()
+dict_test = {}
+for obj in list_final:
+	for key, value in obj.items():
+		dict_test.update({key:value})
+
+
+a = pd.DataFrame(dict_test)
+
+print (a)
+
+
+
+
+
+
+
+
 
 
 
